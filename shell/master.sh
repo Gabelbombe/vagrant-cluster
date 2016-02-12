@@ -9,7 +9,7 @@ else
     cd /tmp
 
     # Install Puppet Master
-    curl -O https://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm &&  \
+    curl -Os https://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm && \
     sudo rpm -Uvh puppetlabs-release-el-7.noarch.rpm &&                       \
     sudo yum update -y -q && sudo yum upgrade -y -q &&                        \
     sudo yum install -y -q puppetserver
