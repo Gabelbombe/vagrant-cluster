@@ -25,9 +25,9 @@ else
     # Configure /etc/hosts file
     echo "" | sudo tee --append /etc/hosts 2> /dev/null && \
     echo "# Host config for Puppet Master and Agent Nodes" | sudo tee --append /etc/hosts 2> /dev/null && \
-    echo "192.168.32.5    puppet.mheducation.com  puppet" | sudo tee --append /etc/hosts 2> /dev/null && \
-    echo "192.168.32.10   node01.mheducation.com  node01" | sudo tee --append /etc/hosts 2> /dev/null && \
-    echo "192.168.32.20   node02.mheducation.com  node02" | sudo tee --append /etc/hosts 2> /dev/null && \
+    echo "192.168.32.5    puppet.mheducation.com  puppet" | sudo tee --append /etc/hosts 2> /dev/null &&  \
+    echo "192.168.32.10   node01.mheducation.com  node01" | sudo tee --append /etc/hosts 2> /dev/null &&  \
+    echo "192.168.32.20   node02.mheducation.com  node02" | sudo tee --append /etc/hosts 2> /dev/null &&  \
     echo "192.168.32.30   node03.mheducation.com  node03" | sudo tee --append /etc/hosts 2> /dev/null
 
     # Add agent section to /etc/puppet/puppet.conf
