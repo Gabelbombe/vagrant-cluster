@@ -31,7 +31,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do | config |
 
       config.vm.provider :virtualbox do | vb |
         #vb.gui = true
-
         vb.customize ["modifyvm", :id, "--memory",  node_values[':memory']]
         vb.customize ["modifyvm", :id, "--name",    node_name]
       end

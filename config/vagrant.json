@@ -17,12 +17,12 @@
       "ports": [],
       ":memory": 1024,
       ":bootstrap": "shell/node.sh"
+    },
+    "node03.mheducation.com": {
+      ":ip": "192.168.32.30",
+      "ports": [],
+      ":memory": 1024,
+      ":bootstrap": "shell/node.sh"
     }
-  },
-  "node03.mheducation.com": {
-    ":ip": "192.168.32.30",
-    "ports": [],
-    ":memory": 1024,
-    ":bootstrap": "shell/node.sh"
   }
 }
