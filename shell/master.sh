@@ -1,7 +1,6 @@
 #!/bin/sh
 
 # Run on VM to bootstrap Puppet Master server
-
 if ps aux | grep "puppet master" | grep -v grep 2> /dev/null
 then
     echo "Puppet Master is already installed. Exiting..."
