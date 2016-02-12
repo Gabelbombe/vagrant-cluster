@@ -6,21 +6,23 @@ if ps aux | grep "puppet master" | grep -v grep 2> /dev/null
 then
     echo "Puppet Master is already installed. Exiting..."
 else
+    cd /tmp
+
     # Install Puppet Master
-    wget https://apt.puppetlabs.com/puppetlabs-release-trusty.deb && \
-    sudo dpkg -i puppetlabs-release-trusty.deb && \
-    sudo apt-get update -yq && sudo apt-get upgrade -yq && \
-    sudo apt-get install -yq puppetmaster
+    curl -O https://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm &&  \
+    sudo rpm -Uvh puppetlabs-release-el-7.noarch.rpm &&                       \
+    sudo yum update -yq && sudo yum upgrade -yq &&                            \
+    sudo yum install -yq puppetserver
 
     # Configure /etc/hosts file
     echo "" | sudo tee --append /etc/hosts 2> /dev/null && \
     echo "# Host config for Puppet Master and Agent Nodes" | sudo tee --append /etc/hosts 2> /dev/null && \
-    echo "192.168.32.5    puppet.example.com  puppet" | sudo tee --append /etc/hosts 2> /dev/null && \
-    echo "192.168.32.10   node01.example.com  node01" | sudo tee --append /etc/hosts 2> /dev/null && \
-    echo "192.168.32.20   node02.example.com  node02" | sudo tee --append /etc/hosts 2> /dev/null
+    echo "192.168.32.5    puppet.mheducation.com  puppet"  | sudo tee --append /etc/hosts 2> /dev/null && \
+    echo "192.168.32.10   node01.mheducation.com  node01"  | sudo tee --append /etc/hosts 2> /dev/null && \
+    echo "192.168.32.20   node02.mheducation.com  node02"  | sudo tee --append /etc/hosts 2> /dev/null
 
     # Add optional alternate DNS names to /etc/puppet/puppet.conf
-    sudo sed -i 's/.*\[main\].*/&\ndns_alt_names = puppet,puppet.example.com/' /etc/puppet/puppet.conf
+    sudo sed -i 's/.*\[main\].*/&\ndns_alt_names = puppet,puppet.mheducation.com/' /etc/puppet/puppet.conf
 
     # Install some initial puppet modules on Puppet Master server
     sudo puppet module install puppetlabs-ntp
