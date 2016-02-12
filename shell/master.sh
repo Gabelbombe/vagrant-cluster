@@ -9,13 +9,12 @@ else
     cd /tmp
 
     # Install Puppet Master
-    curl -Os https://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm && \
-    sudo rpm -Uvh puppetlabs-release-el-7.noarch.rpm &&                       \
-    sudo yum update -y -q && sudo yum upgrade -y -q &&                        \
-    sudo yum install -y -q puppetserver
+    sudo yum -y install https://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm && \
+    sudo yum update  --quiet -y && sudo yum upgrade --quiet -y &&                        \
+    sudo yum -y --enablerepo=puppetlabs-products,puppetlabs-deps --quiet install puppet-server
 
-    # Install pre-releases: https://docs.puppetlabs.com/puppet/3.8/reference/install_el.html#optionally-enable-prereleases
-    sed '/\[puppetlabs-devel\]/,/^\[/s/^enabled=0/enabled=1/' /etc/yum.repos.d/puppetlabs.repo
+    # Enale all repos
+    sed -i -e "s/enabled=1/enabled=0/g" /etc/yum.repos.d/puppetlabs.repo
 
     # Configure /etc/hosts file
     echo "" | sudo tee --append /etc/hosts 2> /dev/null && \
@@ -37,3 +36,11 @@ else
     # symlink manifest from Vagrant synced folder location
     ln -s /vagrant/site.pp /etc/puppet/manifests/site.pp
 fi
+
+# Start Puppet master
+puppet master --verbose --no-daemonize &
+
+PID=$!
+sleep 10 ; kill -9 $PID
+systemctl start  puppetmaster
+systemctl enable puppetmaster
