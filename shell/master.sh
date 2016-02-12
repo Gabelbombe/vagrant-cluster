@@ -38,9 +38,7 @@ else
 fi
 
 # Start Puppet master
-puppet master --verbose --no-daemonize &
-
-PID=$!
-sleep 10 ; kill -9 $PID
-systemctl start  puppetmaster
-systemctl enable puppetmaster
+#puppet master --verbose --no-daemonize &
+#PID=$! ; sleep 10 ; kill -9 $PID
+#systemctl start  puppetmaster
+#systemctl enable puppetmaster

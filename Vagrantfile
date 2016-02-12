@@ -15,6 +15,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do | config |
     node_values = node[1] # content of node
 
     config.vm.define node_name do | config |
+    config.ssh.insert_key = false
 
       # configures all forwarding ports in JSON array
       ports = node_values['ports']
