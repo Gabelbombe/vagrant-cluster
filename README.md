@@ -44,3 +44,12 @@ All the source code this project is on [Github](https://github.com/ehime/vagrant
     sudo puppet cert list # should see 'node01.mheducation.com' cert waiting for signature
     sudo puppet cert sign --all # sign the agent node certs
     sudo puppet cert list --all # check for signed certs
+
+
+
+#### NOTES
+
+  If you are having issues with `Vagrant Error: Connection timeout. Retrying....` try adding the following to your `~/.ssh/config`
+
+    Host *
+      GSSAPIAuthentication no
