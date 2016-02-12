@@ -14,7 +14,7 @@ if cat /etc/crontab | grep puppet 2> /dev/null
 then
     echo "Puppet Agent is already configured. Exiting..."
 else
-    sudo yum update -yq && sudo yum upgrade -yq
+    sudo yum update -y -q && sudo yum upgrade -y -q
 
     sudo puppet resource cron puppet-agent ensure=present user=root minute=30 \
         command='/usr/bin/puppet agent --onetime --no-daemonize --splay'

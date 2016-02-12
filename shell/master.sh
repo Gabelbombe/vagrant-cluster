@@ -11,8 +11,11 @@ else
     # Install Puppet Master
     curl -O https://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm &&  \
     sudo rpm -Uvh puppetlabs-release-el-7.noarch.rpm &&                       \
-    sudo yum update -yq && sudo yum upgrade -yq &&                            \
-    sudo yum install -yq puppetserver
+    sudo yum update -y -q && sudo yum upgrade -y -q &&                        \
+    sudo yum install -y -q puppetserver
+
+    # Install pre-releases: https://docs.puppetlabs.com/puppet/3.8/reference/install_el.html#optionally-enable-prereleases
+    sed '/\[puppetlabs-devel\]/,/^\[/s/^enabled=0/enabled=1/' /etc/yum.repos.d/puppetlabs.repo
 
     # Configure /etc/hosts file
     echo "" | sudo tee --append /etc/hosts 2> /dev/null && \
