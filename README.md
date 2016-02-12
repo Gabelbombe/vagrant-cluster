@@ -13,17 +13,17 @@ All the source code this project is on [Github](https://github.com/ehime/vagrant
 
 #### Usage
 
-  * git clone https://github.com/ehime/vagrant-cluster.git
-  * vagrant up
+    git clone https://github.com/ehime/vagrant-cluster.git
+    vagrant up
 
 ##### Generating certs on the Master
 
-  * vagrant ssh puppet.mheducation.com
-  * sudo service puppetmaster status # test that puppet master was installed
-  * sudo service puppetmaster stop
-  * sudo puppet master --verbose --no-daemonize # Then:  Ctrl+C to kill puppet master
-  * sudo service puppetmaster start
-  * sudo puppet cert list --all # check for 'puppet' cert
+    vagrant ssh puppet.mheducation.com
+    sudo service puppetmaster status # test that puppet master was installed
+    sudo service puppetmaster stop
+    sudo puppet master --verbose --no-daemonize # Then:  Ctrl+C to kill puppet master
+    sudo service puppetmaster start
+    sudo puppet cert list --all # check for 'puppet' cert
 
   According to [Puppet’s website](https://docs.puppetlabs.com/guides/install_puppet/post_install.html), ‘these steps will create the CA certificate and the puppet master certificate, with the appropriate DNS names included.‘
 
@@ -31,16 +31,16 @@ All the source code this project is on [Github](https://github.com/ehime/vagrant
 
   Now that the Puppet Master server is running, open a second terminal tab (‘Shift+Ctrl+T‘)
 
-    * vagrant ssh node01.mheducation.com
-    * sudo service puppet status # test that agent was installed
-    * sudo puppet agent --test --waitforcert=60 # initiate certificate signing request (CSR)
+    vagrant ssh node01.mheducation.com
+    sudo service puppet status # test that agent was installed
+    sudo puppet agent --test --waitforcert=60 # initiate certificate signing request (CSR)
 
-    * vagrant ssh node02.mheducation.com
-    * sudo service puppet status # test that agent was installed
-    * sudo puppet agent --test --waitforcert=60 # initiate certificate signing request (CSR)
+    vagrant ssh node02.mheducation.com
+    sudo service puppet status # test that agent was installed
+    sudo puppet agent --test --waitforcert=60 # initiate certificate signing request (CSR)
 
 ##### Accepting certificates on the Master
 
-  * sudo puppet cert list # should see 'node01.mheducation.com' cert waiting for signature
-  * sudo puppet cert sign --all # sign the agent node certs
-  * sudo puppet cert list --all # check for signed certs
+    sudo puppet cert list # should see 'node01.mheducation.com' cert waiting for signature
+    sudo puppet cert sign --all # sign the agent node certs
+    sudo puppet cert list --all # check for signed certs
