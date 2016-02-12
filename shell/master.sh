@@ -10,7 +10,7 @@ else
 
     # Install Puppet Master
     sudo yum -y install https://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm && \
-    sudo yum update  --quiet -y && sudo yum upgrade --quiet -y &&                        \
+    sudo yum update --quiet -y && sudo yum upgrade --quiet -y &&                         \
     sudo yum -y --enablerepo=puppetlabs-products,puppetlabs-deps --quiet install puppet-server
 
     # Enale all repos
