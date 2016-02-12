@@ -7,7 +7,7 @@ nodes_config = (JSON.parse(File.read("config/vagrant.json")))['nodes']
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do | config |
-  config.vm.box = "ubuntu/trusty64"
+  config.vm.box = "centos/7"
 
   nodes_config.each do | node |
     node_name   = node[0] # name of node
@@ -28,8 +28,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do | config |
       config.vm.network :private_network, ip: node_values[':ip']
 
       config.vm.provider :virtualbox do | vb |
-        vb.customize ["modifyvm", :id, "--memory", node_values[':memory']]
-        vb.customize ["modifyvm", :id, "--name", node_name]
+        vb.customize ["modifyvm", :id, "--memory",  node_values[':memory']]
+        vb.customize ["modifyvm", :id, "--name",    node_name]
       end
 
       config.vm.provision :shell, :path => node_values[':bootstrap']
