@@ -7,7 +7,7 @@ if ps aux | grep "puppet agent" | grep -v grep 2> /dev/null
 then
     echo "Puppet Agent is already installed. Moving on..."
 else
-    sudo yum install -yq puppet
+    sudo yum install -y -q puppet
 fi
 
 if cat /etc/crontab | grep puppet 2> /dev/null
