@@ -8,6 +8,7 @@ then
     echo "Puppet Agent is already installed. Moving on..."
 else
     sudo yum -y install https://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm
+    sudo yum -y --enablerepo=puppetlabs-products,puppetlabs-deps --quiet install puppet 
 fi
 
 if cat /etc/crontab | grep puppet 2> /dev/null
