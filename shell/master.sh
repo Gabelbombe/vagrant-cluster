@@ -7,6 +7,21 @@ then
 else
     cd /tmp
 
+    # Install Ruby, Required Packages
+    sudo yum install -y gcc-c++ patch readline readline-devel zlib zlib-devel
+    sudo yum install -y libyaml-devel libffi-devel openssl-devel make
+    sudo yum install -y bzip2 autoconf automake libtool bison iconv-devel sqlite-devel
+
+    # Install Ruby, RVM
+    curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+    curl -L get.rvm.io | bash -s stable
+    source /etc/profile.d/rvm.sh
+    rvm reload
+
+    # Install Ruby, Test Requirements then install
+    rvm requirements run
+    rvm install 2.2.4
+
     # Install Puppet Master
     sudo yum -y install https://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm && \
     sudo yum update --quiet -y && sudo yum upgrade --quiet -y &&                         \
@@ -34,7 +49,7 @@ else
     sudo puppet module install garystafford-fig
 
     # symlink manifest from Vagrant synced folder location
-    ln -s /vagrant/site.pp /etc/puppet/manifests/site.pp
+    ln -s /vagrant/puppet/site.pp /etc/puppet/manifests/site.pp
 fi
 
 # Start Puppet master

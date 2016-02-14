@@ -7,7 +7,7 @@ nodes_config = (JSON.parse(File.read("config/vagrant.json")))['nodes']
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do | config |
-  config.vm.box = "centos/7"
+  config.vm.box = "bento/centos-6.7"
 
   # List with `vagrant status`
   nodes_config.each do | node |
@@ -15,9 +15,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do | config |
     node_values = node[1] # content of node
 
     config.vm.define node_name do | config |
-    config.ssh.insert_key = false
 
       # configures all forwarding ports in JSON array
+      config.ssh.forward_agent = true
+
       ports = node_values['ports']
       ports.each do | port |
         config.vm.network :forwarded_port,
