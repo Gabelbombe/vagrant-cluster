@@ -7,7 +7,7 @@ nodes_config = (JSON.parse(File.read("config/vagrant.json")))['nodes']
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do | config |
-  config.vm.box = "bento/centos-6.7"
+  config.vm.box = "bento/centos-7.1"
 
   # List with `vagrant status`
   nodes_config.each do | node |

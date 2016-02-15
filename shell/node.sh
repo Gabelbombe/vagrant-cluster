@@ -31,10 +31,11 @@ else
     echo "192.168.32.30   node03.mheducation.com  node03" | sudo tee --append /etc/hosts 2> /dev/null
 
     # Add agent section to /etc/puppet/puppet.conf
-    echo "" && echo "[agent]\nserver=puppet" | sudo tee --append /etc/puppet/puppet.conf 2> /dev/null
+    echo "" && echo -e "[agent]\nserver=puppet" | sudo tee --append /etc/puppet/puppet.conf 2> /dev/null
 
     sudo puppet agent --enable
 fi
 
-#systemctl start puppet
-#systemctl enable puppet
+# Add to master, should autosign
+sudo service puppet status                # test that agent was installed
+sudo puppet agent --test --waitforcert=60 # initiate certificate signing request (CSR)
