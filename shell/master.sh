@@ -50,4 +50,11 @@ PID=$! ; sleep 10 ; sudo kill $PID
 
 sudo service puppetmaster start
 sudo puppet cert list --all       # check for `puppet` cert
-' >> ~/runonce.sh && chmod a+x $_
+
+ABSOLUTE_PATH=$(cd `dirname "${BASH_SOURCE[0]}"` && pwd)/`basename "${BASH_SOURCE[0]}"`
+rm -f $ABSOLUTE_PATH
+' >> ~/runonce.sh
+
+chmod a+x ~/runonce.sh
+
+echo ~/.bashrc > '[ -f ~/runonce.sh ] && bash ~/runonce.sh'
