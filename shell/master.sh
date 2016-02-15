@@ -16,20 +16,21 @@ else
     # Configure /etc/hosts file
     echo "" | sudo tee --append /etc/hosts 2> /dev/null && \
     echo "# Host config for Puppet Master and Agent Nodes" | sudo tee --append /etc/hosts 2> /dev/null && \
-    echo "192.168.32.5    puppet.mheducation.com  puppet"  | sudo tee --append /etc/hosts 2> /dev/null && \
+    echo "192.168.32.0    puppet.mheducation.com  puppet"  | sudo tee --append /etc/hosts 2> /dev/null && \
+    echo "192.168.32.5    haproxy.mheducation.com haproxy" | sudo tee --append /etc/hosts 2> /dev/null && \
     echo "192.168.32.10   node01.mheducation.com  node01"  | sudo tee --append /etc/hosts 2> /dev/null && \
-    echo "192.168.32.20   node02.mheducation.com  node01"  | sudo tee --append /etc/hosts 2> /dev/null && \
-    echo "192.168.32.30   node03.mheducation.com  node02"  | sudo tee --append /etc/hosts 2> /dev/null
+    echo "192.168.32.20   node02.mheducation.com  node02"  | sudo tee --append /etc/hosts 2> /dev/null && \
+    echo "192.168.32.30   node03.mheducation.com  node03"  | sudo tee --append /etc/hosts 2> /dev/null
 
     # Add optional alternate DNS names to /etc/puppet/puppet.conf
     sudo sed -i 's/.*\[main\].*/&\ndns_alt_names = puppet,puppet.mheducation.com/' /etc/puppet/puppet.conf
 
     # Install some initial puppet modules on Puppet Master server
     sudo puppet module install puppetlabs-ntp
-    sudo puppet module install garethr-docker
     sudo puppet module install puppetlabs-git
     sudo puppet module install puppetlabs-vcsrepo
-    sudo puppet module install garystafford-fig
+    sudo puppet module install puppetlabs-haproxy
+    sudo puppet module install puppetlabs-apache
 
     # symlink manifest from Vagrant synced folder locationsudo rpm -Uvh http://rbel.frameos.org/rbel6
     ln -s /vagrant/puppet/site.pp /etc/puppet/manifests/site.pp
@@ -42,7 +43,7 @@ echo '*.mheducation.com' >> /etc/puppet/autosign.conf
 sudo service puppetmaster status  # test that puppet master was installed
 sudo service puppetmaster stop
 sudo puppet master --verbose --no-daemonize &
-sleep 10
+PID=$! ; sleep 10 ; sudo kill $PID
 
 # Ctrl+C to kill puppet master
 sudo service puppetmaster start

@@ -2,7 +2,6 @@
 
 # Run on VM to bootstrap Puppet Agent nodes
 # http://blog.kloudless.com/2013/07/01/automating-development-environments-with-vagrant-and-puppet/
-
 if ps aux | grep "puppet agent" | grep -v grep 2> /dev/null
 then
     echo "Puppet Agent is already installed. Moving on..."
@@ -24,11 +23,12 @@ else
 
     # Configure /etc/hosts file
     echo "" | sudo tee --append /etc/hosts 2> /dev/null && \
-    echo "# Host config for Puppet Master and Agent Nodes" | sudo tee --append /etc/hosts 2> /dev/null && \
-    echo "192.168.32.5    puppet.mheducation.com  puppet" | sudo tee --append /etc/hosts 2> /dev/null &&  \
-    echo "192.168.32.10   node01.mheducation.com  node01" | sudo tee --append /etc/hosts 2> /dev/null &&  \
-    echo "192.168.32.20   node02.mheducation.com  node02" | sudo tee --append /etc/hosts 2> /dev/null &&  \
-    echo "192.168.32.30   node03.mheducation.com  node03" | sudo tee --append /etc/hosts 2> /dev/null
+    echo "# Host config for Puppet Master and Agent Nodes"   | sudo tee --append /etc/hosts 2> /dev/null && \
+    echo "192.168.32.0    puppet.mheducation.com    puppet"  | sudo tee --append /etc/hosts 2> /dev/null && \
+    echo "192.168.32.5    haproxy.mheducation.com   haproxy" | sudo tee --append /etc/hosts 2> /dev/null && \
+    echo "192.168.32.10   node01.mheducation.com    node01"  | sudo tee --append /etc/hosts 2> /dev/null && \
+    echo "192.168.32.20   node02.mheducation.com    node02"  | sudo tee --append /etc/hosts 2> /dev/null && \
+    echo "192.168.32.30   node03.mheducation.com    node03"  | sudo tee --append /etc/hosts 2> /dev/null
 
     # Add agent section to /etc/puppet/puppet.conf
     echo "" && echo -e "[agent]\nserver=puppet" | sudo tee --append /etc/puppet/puppet.conf 2> /dev/null
