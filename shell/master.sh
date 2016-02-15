@@ -16,8 +16,8 @@ else
     # Configure /etc/hosts file
     echo "" | sudo tee --append /etc/hosts 2> /dev/null && \
     echo "# Host config for Puppet Master and Agent Nodes" | sudo tee --append /etc/hosts 2> /dev/null && \
-    echo "192.168.32.0    puppet.mheducation.com  puppet"  | sudo tee --append /etc/hosts 2> /dev/null && \
-    echo "192.168.32.5    haproxy.mheducation.com haproxy" | sudo tee --append /etc/hosts 2> /dev/null && \
+    echo "192.168.32.5    puppet.mheducation.com  puppet"  | sudo tee --append /etc/hosts 2> /dev/null && \
+#    echo "192.168.32.6    haproxy.mheducation.com haproxy" | sudo tee --append /etc/hosts 2> /dev/null && \
     echo "192.168.32.10   node01.mheducation.com  node01"  | sudo tee --append /etc/hosts 2> /dev/null && \
     echo "192.168.32.20   node02.mheducation.com  node02"  | sudo tee --append /etc/hosts 2> /dev/null && \
     echo "192.168.32.30   node03.mheducation.com  node03"  | sudo tee --append /etc/hosts 2> /dev/null
@@ -37,14 +37,17 @@ else
 fi
 
 # Add mhedu to autosigning
-echo '*.mheducation.com' >> /etc/puppet/autosign.conf
+#echo '*.mheducation.com' >> /etc/puppet/autosign.conf
 
+echo '
 # Start Puppet master
 sudo service puppetmaster status  # test that puppet master was installed
 sudo service puppetmaster stop
+
+# Ctrl+C to kill puppet master
 sudo puppet master --verbose --no-daemonize &
 PID=$! ; sleep 10 ; sudo kill $PID
 
-# Ctrl+C to kill puppet master
 sudo service puppetmaster start
-sudo puppet cert list --all       # check for 'puppet' cert
+sudo puppet cert list --all       # check for `puppet` cert
+' >> ~/runonce.sh && chmod a+x $_
