@@ -1,13 +1,19 @@
 # vi: set ft=ruby :
 # Builds Puppet Master and multiple Puppet Agent Nodes using JSON config file
+# Requires triggers, vagrant plugin install vagrant-triggers
 
 # read vm and chef configurations from JSON files
-nodes_config = (JSON.parse(File.read("config/vagrant.json")))['nodes']
+nodes_config = (JSON.parse(File.read("config/cluster.json")))['nodes']
 
-VAGRANTFILE_API_VERSION = "2"
+Vagrant.configure(2) do | config |
 
-Vagrant.configure(VAGRANTFILE_API_VERSION) do | config |
   config.vm.box = "bento/centos-7.1"
+  if Vagrant.has_plugin?("vagrant-cachier")
+    config.cache.scope  = :box
+
+    config.cache.enable   :yum
+    config.cache.enable   :puppet
+  end
 
   # List with `vagrant status`
   nodes_config.each do | node |
@@ -28,7 +34,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do | config |
       end
 
       config.vm.hostname = node_name
-      config.vm.network :private_network, ip: node_values[':ip']
+
+      config.vm.network :private_network,
+        ip: node_values[':ip'],
+        auto_config: false
 
       config.vm.provider :virtualbox do | vb |
         #vb.gui = true

@@ -18,8 +18,8 @@ else
     echo "# Host config for Puppet Master and Agent Nodes" | sudo tee --append /etc/hosts 2> /dev/null && \
     echo "192.168.32.5    puppet.mheducation.com  puppet"  | sudo tee --append /etc/hosts 2> /dev/null && \
     echo "192.168.32.10   node01.mheducation.com  node01"  | sudo tee --append /etc/hosts 2> /dev/null && \
-    echo "192.168.32.20   node02.mheducation.com  node01"  | sudo tee --append /etc/hosts 2> /dev/null && \
-    echo "192.168.32.30   node03.mheducation.com  node02"  | sudo tee --append /etc/hosts 2> /dev/null
+    echo "192.168.32.20   node02.mheducation.com  node02"  | sudo tee --append /etc/hosts 2> /dev/null && \
+    echo "192.168.32.30   node03.mheducation.com  node03"  | sudo tee --append /etc/hosts 2> /dev/null
 
     # Add optional alternate DNS names to /etc/puppet/puppet.conf
     sudo sed -i 's/.*\[main\].*/&\ndns_alt_names = puppet,puppet.mheducation.com/' /etc/puppet/puppet.conf
@@ -38,12 +38,15 @@ fi
 # Add mhedu to autosigning
 echo '*.mheducation.com' >> /etc/puppet/autosign.conf
 
-# Start Puppet master
-sudo service puppetmaster status  # test that puppet master was installed
-sudo service puppetmaster stop
-sudo puppet master --verbose --no-daemonize &
-sleep 10
+systemctl start  puppetmaster
+systemctl enable puppetmaster
 
-# Ctrl+C to kill puppet master
-sudo service puppetmaster start
-sudo puppet cert list --all       # check for 'puppet' cert
+# Start Puppet master
+# sudo service puppetmaster status  # test that puppet master was installed
+# sudo service puppetmaster stop
+# sudo puppet master --verbose --no-daemonize &
+# sleep 10
+#
+# # Ctrl+C to kill puppet master
+# sudo service puppetmaster start
+# sudo puppet cert list --all       # check for 'puppet' cert
