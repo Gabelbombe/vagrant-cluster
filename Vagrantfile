@@ -2,15 +2,25 @@
 # Builds Puppet Master and multiple Puppet Agent Nodes using JSON config file
 # Requires triggers, vagrant plugin install vagrant-triggers
 
+
+class GuestFix < VagrantVbguest::Installers::Linux
+  def install(opts=nil, &block)
+    communicate.sudo('yum update', opts, &block)
+    communicate.sudo('yum purge -y virtualbox-guest-dkms virtualbox-guest-utils virtualbox-guest-x11', opts, &block)
+    super
+    communicate.sudo('( [ -d /opt/VBoxGuestAdditions-5.0.14/lib/VBoxGuestAdditions ] && sudo ln -s /opt/VBoxGuestAdditions-5.0.14/lib/VBoxGuestAdditions /usr/lib/VBoxGuestAdditions ) || true', )
+  end
+end
+
 # read vm and chef configurations from JSON files
 nodes_config = (JSON.parse(File.read("config/cluster.json")))['nodes']
 
 Vagrant.configure(2) do | config |
+  config.vbguest.installer = GuestFix
 
   config.vm.box = "bento/centos-7.1"
   if Vagrant.has_plugin?("vagrant-cachier")
     config.cache.scope  = :box
-
     config.cache.enable   :yum
     config.cache.enable   :puppet
   end
