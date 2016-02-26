@@ -5,8 +5,12 @@
 
 class GuestFix < VagrantVbguest::Installers::Linux
   def install(opts=nil, &block)
-    communicate.sudo('yum update -y', opts, &block)
-    communicate.sudo('yum remove -y virtualbox-guest-dkms virtualbox-guest-utils virtualbox-guest-x11', opts, &block)
+    communicate.sudo('yum update  -y', opts, &block)
+    communicate.sudo('yum remove  -y virtualbox-guest-dkms virtualbox-guest-utils virtualbox-guest-x11', opts, &block)
+    communicate.sudo('yum install -y gcc kernel-devel make', opts, &block)
+
+    ## REF: http://stackoverflow.com/questions/28328775/virtualbox-mount-vboxsf-mounting-failed-with-the-error-no-such-device
+#    communicate.sudo('modprobe -a vboxguest vboxsf vboxvideo', opts, &block)
     super
     communicate.sudo('( [ -d /opt/VBoxGuestAdditions-5.0.14/lib/VBoxGuestAdditions ] && sudo ln -s /opt/VBoxGuestAdditions-5.0.14/lib/VBoxGuestAdditions /usr/lib/VBoxGuestAdditions ) || true', )
   end
