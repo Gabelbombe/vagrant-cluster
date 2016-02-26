@@ -1,12 +1,12 @@
 # vi: set ft=ruby :
 # Builds Puppet Master and multiple Puppet Agent Nodes using JSON config file
 # Requires triggers, vagrant plugin install vagrant-triggers
-
+# Requires vbguest,  vagrant plugin install vagrant-vbguest
 
 class GuestFix < VagrantVbguest::Installers::Linux
   def install(opts=nil, &block)
-    communicate.sudo('yum update', opts, &block)
-    communicate.sudo('yum purge -y virtualbox-guest-dkms virtualbox-guest-utils virtualbox-guest-x11', opts, &block)
+    communicate.sudo('yum update -y', opts, &block)
+    communicate.sudo('yum remove -y virtualbox-guest-dkms virtualbox-guest-utils virtualbox-guest-x11', opts, &block)
     super
     communicate.sudo('( [ -d /opt/VBoxGuestAdditions-5.0.14/lib/VBoxGuestAdditions ] && sudo ln -s /opt/VBoxGuestAdditions-5.0.14/lib/VBoxGuestAdditions /usr/lib/VBoxGuestAdditions ) || true', )
   end
@@ -17,6 +17,11 @@ nodes_config = (JSON.parse(File.read("config/cluster.json")))['nodes']
 
 Vagrant.configure(2) do | config |
   config.vbguest.installer = GuestFix
+
+  # set auto_update to true to check the correct
+  # additions version when booting the machine
+  config.vbguest.auto_update = true
+  config.vbguest.auto_reboot = true
 
   config.vm.box = "bento/centos-7.1"
   if Vagrant.has_plugin?("vagrant-cachier")
@@ -32,7 +37,7 @@ Vagrant.configure(2) do | config |
 
     config.vm.define node_name do | config |
 
-      # configures all forwarding ports in JSON array
+      # configure all forward ports from JSON
       config.ssh.forward_agent = true
 
       ports = node_values['ports']
@@ -50,9 +55,9 @@ Vagrant.configure(2) do | config |
         auto_config: false
 
       config.vm.provider :virtualbox do | vb |
-        #vb.gui = true
         vb.customize ["modifyvm", :id, "--memory",  node_values[':memory']]
         vb.customize ["modifyvm", :id, "--name",    node_name]
+        #vb.gui = true
       end
 
       config.vm.provision :shell, :path => node_values[':bootstrap']
