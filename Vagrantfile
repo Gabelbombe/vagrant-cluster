@@ -8,11 +8,8 @@ class GuestFix < VagrantVbguest::Installers::Linux
     communicate.sudo('yum update  -y', opts, &block)
     communicate.sudo('yum remove  -y virtualbox-guest-dkms virtualbox-guest-utils virtualbox-guest-x11', opts, &block)
     communicate.sudo('yum install -y gcc kernel-devel make', opts, &block)
+    # communicate.sudo('yum groupinstall -y "Development Tools"', opts, &block)
 
-    ## REF: http://stackoverflow.com/questions/28328775/virtualbox-mount-vboxsf-mounting-failed-with-the-error-no-such-device
-#    communicate.sudo('modprobe -a vboxguest vboxsf vboxvideo', opts, &block)
-    super
-    communicate.sudo('( [ -d /opt/VBoxGuestAdditions-5.0.14/lib/VBoxGuestAdditions ] && sudo ln -s /opt/VBoxGuestAdditions-5.0.14/lib/VBoxGuestAdditions /usr/lib/VBoxGuestAdditions ) || true', )
   end
 end
 
@@ -24,15 +21,10 @@ Vagrant.configure(2) do | config |
 
   # set auto_update to true to check the correct
   # additions version when booting the machine
-  config.vbguest.auto_update = true
   config.vbguest.auto_reboot = true
+  config.vbguest.auto_update = true
 
-  config.vm.box = "bento/centos-7.1"
-  if Vagrant.has_plugin?("vagrant-cachier")
-    config.cache.scope  = :box
-    config.cache.enable   :yum
-    config.cache.enable   :puppet
-  end
+  config.vm.box = "bento/centos-7.2"
 
   # List with `vagrant status`
   nodes_config.each do | node |
