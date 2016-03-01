@@ -5,14 +5,14 @@ node default {
   include ntp, git
 }
 
-node 'node01.mheducation.com', 'node02.mheducation.com', 'node03.mheducation.com' {
+node 'node01.mosburn.com', 'node02.mosburn.com', 'node03.mosburn.com' {
   # Test message
   notify { "Debug output on ${hostname} node.": }
 
   include ntp, git
 }
 
-node 'haproxy.mheducation.com' {
+node 'haproxy.mosburn.com' {
   # Test message
   notify { "Debug output on proxy ${hostname} node.": }
 
@@ -34,7 +34,7 @@ node 'haproxy.mheducation.com' {
 
     haproxy::balancermember { 'haproxy':
       listening_service => 'puppet00',
-      server_names      => ['node01.mheducation.com', 'node02.mheducation.com', 'node03.mheducation.com'],
+      server_names      => ['node01.mosburn.com', 'node02.mosburn.com', 'node03.mosburn.com'],
       ipaddresses       => ['192.168.32.10',          '192.168.32.20',          '192.168.32.30'],
       ports             => '80',
       options           => 'check',
