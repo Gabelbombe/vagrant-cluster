@@ -32,6 +32,7 @@ else
     sudo puppet module install KyleAnderson-consul
     sudo puppet module install puppetlabs-haproxy
     sudo puppet module install puppetlabs-apache
+	sudo puppet module install stahnma-epel
 
     # symlink manifest from Vagrant synced folder locationsudo rpm -Uvh http://rbel.frameos.org/rbel6
     ln -s /vagrant/puppet/site.pp /etc/puppet/manifests/site.pp
