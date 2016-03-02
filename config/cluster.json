@@ -9,19 +9,19 @@
     "node01.mosburn.com": {
       ":ip": "192.168.32.10",
       "ports": [],
-      ":memory": 1024,
+      ":memory": 512,
       ":bootstrap": "shell/node.sh"
     },
     "node02.mosburn.com": {
       ":ip": "192.168.32.20",
       "ports": [],
-      ":memory": 1024,
+      ":memory": 512,
       ":bootstrap": "shell/node.sh"
     },
     "node03.mosburn.com": {
       ":ip": "192.168.32.30",
       "ports": [],
-      ":memory": 1024,
+      ":memory": 512,
       ":bootstrap": "shell/node.sh"
     }
   }
