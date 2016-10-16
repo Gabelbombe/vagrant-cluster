@@ -1,0 +1,14 @@
+{
+  "name": "mosburn-editors",
+  "version": "0.1.0",
+  "author": "mosburn",
+  "summary": "editors module",
+  "license": "Apache 2.0",
+  "source": "local",
+  "project_page": "code",
+  "issues_url": "nope",
+  "dependencies": [
+    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"}
+  ]
+}
+

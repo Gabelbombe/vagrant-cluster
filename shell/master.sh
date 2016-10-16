@@ -7,7 +7,7 @@ then
 else
     # Install Puppet Master
     sudo yum -y install https://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm && \
-    sudo yum update --quiet -y && sudo yum upgrade --quiet -y &&                         \
+    sudo yum -y update --quiet  && sudo yum upgrade -y &&                         \
     sudo yum -y --enablerepo=puppetlabs-products,puppetlabs-deps --quiet install puppet-server
 
     # Enale all repos
@@ -16,14 +16,14 @@ else
     # Configure /etc/hosts file
     echo "" | sudo tee --append /etc/hosts 2> /dev/null && \
     echo "# Host config for Puppet Master and Agent Nodes" | sudo tee --append /etc/hosts 2> /dev/null && \
-    echo "192.168.32.5    puppet.mheducation.com  puppet"  | sudo tee --append /etc/hosts 2> /dev/null && \
-#    echo "192.168.32.6    haproxy.mheducation.com haproxy" | sudo tee --append /etc/hosts 2> /dev/null && \
-    echo "192.168.32.10   node01.mheducation.com  node01"  | sudo tee --append /etc/hosts 2> /dev/null && \
-    echo "192.168.32.20   node02.mheducation.com  node02"  | sudo tee --append /etc/hosts 2> /dev/null && \
-    echo "192.168.32.30   node03.mheducation.com  node03"  | sudo tee --append /etc/hosts 2> /dev/null
+    echo "192.168.32.5    puppet.mosburn.com  puppet"  | sudo tee --append /etc/hosts 2> /dev/null && \
+#    echo "192.168.32.6    haproxy.mosburn.com haproxy" | sudo tee --append /etc/hosts 2> /dev/null && \
+    echo "192.168.32.10   node01.mosburn.com  node01"  | sudo tee --append /etc/hosts 2> /dev/null && \
+    echo "192.168.32.20   node02.mosburn.com  node02"  | sudo tee --append /etc/hosts 2> /dev/null && \
+    echo "192.168.32.30   node03.mosburn.com  node03"  | sudo tee --append /etc/hosts 2> /dev/null
 
     # Add optional alternate DNS names to /etc/puppet/puppet.conf
-    sudo sed -i 's/.*\[main\].*/&\ndns_alt_names = puppet,puppet.mheducation.com/' /etc/puppet/puppet.conf
+    sudo sed -i 's/.*\[main\].*/&\ndns_alt_names = puppet,puppet.mosburn.com/' /etc/puppet/puppet.conf
 
     # Install some initial puppet modules on Puppet Master server
     sudo puppet module install puppetlabs-ntp
@@ -32,13 +32,14 @@ else
     sudo puppet module install KyleAnderson-consul
     sudo puppet module install puppetlabs-haproxy
     sudo puppet module install puppetlabs-apache
+	sudo puppet module install stahnma-epel
 
     # symlink manifest from Vagrant synced folder locationsudo rpm -Uvh http://rbel.frameos.org/rbel6
     ln -s /vagrant/puppet/site.pp /etc/puppet/manifests/site.pp
 fi
 
 # Add mhedu to autosigning
-echo '*.mheducation.com' >> /etc/puppet/autosign.conf
+echo '*.mosburn.com' >> /etc/puppet/autosign.conf
 
 systemctl start  puppetmaster
 systemctl enable puppetmaster

@@ -18,7 +18,7 @@ All the source code this project is on [Github](https://github.com/ehime/vagrant
 
 ##### Generating certs on the Master
 
-    vagrant ssh puppet.mheducation.com
+    vagrant ssh puppet.mosburn.com
     sudo service puppetmaster status # test that puppet master was installed
     sudo service puppetmaster stop
     sudo puppet master --verbose --no-daemonize # Then:  Ctrl+C to kill puppet master
@@ -31,17 +31,17 @@ All the source code this project is on [Github](https://github.com/ehime/vagrant
 
   Now that the Puppet Master server is running, open a second terminal tab (‘Shift+Ctrl+T‘)
 
-    vagrant ssh node01.mheducation.com
+    vagrant ssh node01.mosburn.com
     sudo service puppet status # test that agent was installed
     sudo puppet agent --test --waitforcert=60 # initiate certificate signing request (CSR)
 
-    vagrant ssh node02.mheducation.com
+    vagrant ssh node02.mosburn.com
     sudo service puppet status # test that agent was installed
     sudo puppet agent --test --waitforcert=60 # initiate certificate signing request (CSR)
 
 ##### Accepting certificates on the Master
 
-    sudo puppet cert list # should see 'node01.mheducation.com' cert waiting for signature
+    sudo puppet cert list # should see 'node01.mosburn.com' cert waiting for signature
     sudo puppet cert sign --all # sign the agent node certs
     sudo puppet cert list --all # check for signed certs
 
